@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate, useNavigate } from "react-router";
 import { getToken, setToken } from "../auth/token";
+import "./Login.css";
 
 type LoginForm = {
   email: string;
@@ -47,43 +48,67 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <h1>Iniciar sesión</h1>
+    <div className="login-page">
+      <div className="login-card">
+        <div className="login-card__header">
+          <div className="login-card__badge">👋</div>
+          <h1>Bienvenido de nuevo</h1>
+          <p>Ingresa tus credenciales para continuar</p>
+        </div>
 
-      <div>
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          {...register("email", {
-            required: "El email es obligatorio",
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "Email inválido",
-            },
-          })}
-        />
-        {errors.email && <p role="alert">{errors.email.message}</p>}
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <div className="field">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="tu@correo.com"
+              aria-invalid={errors.email ? "true" : "false"}
+              {...register("email", {
+                required: "El email es obligatorio",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Email inválido",
+                },
+              })}
+            />
+            {errors.email && (
+              <p className="field-error" role="alert">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          <div className="field">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              aria-invalid={errors.password ? "true" : "false"}
+              {...register("password", {
+                required: "La contraseña es obligatoria",
+                minLength: { value: 6, message: "Mínimo 6 caracteres" },
+              })}
+            />
+            {errors.password && (
+              <p className="field-error" role="alert">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          {serverError && (
+            <div className="form-error" role="alert">
+              {serverError}
+            </div>
+          )}
+
+          <button className="submit-btn" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Ingresando..." : "Ingresar"}
+          </button>
+        </form>
       </div>
-
-      <div>
-        <label htmlFor="password">Contraseña</label>
-        <input
-          id="password"
-          type="password"
-          {...register("password", {
-            required: "La contraseña es obligatoria",
-            minLength: { value: 6, message: "Mínimo 6 caracteres" },
-          })}
-        />
-        {errors.password && <p role="alert">{errors.password.message}</p>}
-      </div>
-
-      {serverError && <p role="alert">{serverError}</p>}
-
-      <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Ingresando..." : "Ingresar"}
-      </button>
-    </form>
+    </div>
   );
 }
