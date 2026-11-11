@@ -1,0 +1,21 @@
+.store-page { min-height: 100vh; background: var(--bg); color: var(--text-h); }
+.store-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 6vw; background: var(--surface); border-bottom: 1px solid var(--border); }
+.store-header nav { display: flex; align-items: center; gap: 18px; }
+.store-header a { color: var(--primary); font-weight: 600; text-decoration: none; }
+.store-header button { border: 1px solid var(--border); background: transparent; border-radius: var(--radius-sm); padding: 8px 12px; cursor: pointer; }
+.store-main { width: min(1120px, 90vw); margin: 0 auto; padding: 48px 0; }
+.store-title { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 30px; }
+.store-title p { color: var(--primary); font-weight: 700; margin-bottom: 6px; }
+.checkout-button { padding: 13px 20px; border: 0; border-radius: var(--radius-sm); background: #009ee3; color: white; font-weight: 700; cursor: pointer; }
+.checkout-button:disabled { opacity: .6; cursor: wait; }
+.store-error { padding: 12px 16px; margin-bottom: 22px; color: var(--danger); background: var(--danger-bg); border: 1px solid var(--danger-border); border-radius: var(--radius-sm); }
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 22px; }
+.product-card { overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+.product-card img, .product-placeholder { width: 100%; height: 180px; object-fit: cover; }
+.product-placeholder { display: grid; place-items: center; background: var(--primary-bg); font-size: 48px; }
+.product-card__body { display: flex; flex-direction: column; gap: 10px; padding: 18px; }
+.product-card__body h2 { font-size: 18px; }
+.product-card__body small { color: var(--text-muted); }
+.product-card__body label { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+.product-card__body input { width: 70px; padding: 7px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+@media (max-width: 640px) { .store-title { align-items: stretch; flex-direction: column; } .store-header { align-items: flex-start; gap: 12px; flex-direction: column; } }

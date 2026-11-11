@@ -9,6 +9,7 @@ type TokenPayload = {
   name: string
   lastname: string
   email: string
+  role: 'ADMIN' | 'CLIENT'
 }
 
 export const getTokenPayload = (): TokenPayload | null => {

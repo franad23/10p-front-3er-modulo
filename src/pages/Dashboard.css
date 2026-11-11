@@ -21,6 +21,9 @@
   color: var(--text-h);
 }
 
+.dashboard__actions { display: flex; align-items: center; gap: 14px; }
+.dashboard__actions a { color: var(--primary); font-weight: 600; text-decoration: none; }
+
 .dashboard__brand-badge {
   width: 32px;
   height: 32px;

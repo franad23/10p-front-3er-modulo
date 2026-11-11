@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
-import { clearToken, getToken, getTokenPayload } from "../auth/token";
+import { Link, useNavigate } from "react-router";
+import { clearToken, getToken } from "../auth/token";
 import "./Dashboard.css";
 
 type Category = {
@@ -103,10 +103,16 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    setLoading(true);
-    Promise.all([loadProducts(1), loadCategories()]).finally(() =>
-      setLoading(false),
-    );
+    const initialLoad = async () => {
+      try {
+        await Promise.all([loadProducts(1), loadCategories()]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void initialLoad();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isFirstRender = useRef(true);
@@ -115,9 +121,13 @@ export default function Dashboard() {
       isFirstRender.current = false;
       return;
     }
-    const timeoutId = setTimeout(() => {
+    const timeoutId = setTimeout(async () => {
       setLoading(true);
-      loadProducts(1, pageSize, search).finally(() => setLoading(false));
+      try {
+        await loadProducts(1, pageSize, search);
+      } finally {
+        setLoading(false);
+      }
     }, 400);
     return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -126,28 +136,26 @@ export default function Dashboard() {
   const goToPage = async (targetPage: number) => {
     if (targetPage < 1 || targetPage > totalPages) return;
     setLoading(true);
-    await loadProducts(targetPage).finally(() => setLoading(false));
+    try {
+      await loadProducts(targetPage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePageSizeChange = async (newSize: number) => {
     setPageSize(newSize);
     setLoading(true);
-    await loadProducts(1, newSize, search).finally(() => setLoading(false));
+    try {
+      await loadProducts(1, newSize, search);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onSubmit = async (data: ProductForm) => {
     setServerError(null);
     setSuccessMessage(null);
-    const payload = getTokenPayload();
-    if (!payload?.id) {
-      setServerError(
-        "Tu sesión no tiene el formato esperado, volvé a iniciar sesión.",
-      );
-      clearToken();
-      navigate("/login", { replace: true });
-      return;
-    }
-
     const imageFile = data.image?.[0];
     if (!imageFile) {
       setServerError("La imagen del producto es obligatoria");
@@ -162,7 +170,6 @@ export default function Dashboard() {
       formData.append("stock", String(Number(data.stock)));
       formData.append("active", String(data.active));
       formData.append("category_id", data.category_id);
-      formData.append("createdBy_id", payload.id);
       formData.append("image", imageFile);
 
       const res = await fetch(`${API_URL}/product`, {
@@ -172,7 +179,12 @@ export default function Dashboard() {
         },
         body: formData,
       });
-      const body = await res.json().catch(() => ({}));
+      let body;
+      try {
+        body = await res.json();
+      } catch {
+        body = {};
+      }
       if (!res.ok) {
         setServerError(
           Array.isArray(body.errors)
@@ -202,9 +214,12 @@ export default function Dashboard() {
           <span className="dashboard__brand-badge">🚀</span>
           <span>Mi Panel</span>
         </div>
-        <button className="logout-btn" onClick={handleLogout}>
-          Cerrar sesión
-        </button>
+        <div className="dashboard__actions">
+          <Link to="/orders">Ver compras</Link>
+          <button className="logout-btn" onClick={handleLogout}>
+            Cerrar sesión
+          </button>
+        </div>
       </header>
 
       <main className="dashboard__main dashboard__main--products">

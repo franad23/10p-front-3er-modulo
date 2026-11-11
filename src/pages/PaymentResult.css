@@ -1,0 +1,13 @@
+.payment-result { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: var(--bg); }
+.payment-result section { width: min(480px, 100%); padding: 42px; text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+.payment-result__icon { width: 70px; height: 70px; display: grid; place-items: center; margin: 0 auto 20px; border-radius: 50%; font-size: 38px; font-weight: 800; }
+.payment-result--success .payment-result__icon { color: #08783e; background: #dcfce7; }
+.payment-result--pending .payment-result__icon { color: #946200; background: #fef3c7; }
+.payment-result--failure .payment-result__icon { color: var(--danger); background: var(--danger-bg); }
+.payment-result p { color: #009ee3; font-weight: 700; }
+.payment-result h1 { margin: 8px 0 12px; }
+.payment-result span, .payment-result small { display: block; color: var(--text-muted); }
+.payment-result small { margin-top: 12px; }
+.payment-result__actions { display: flex; justify-content: center; gap: 12px; margin-top: 26px; }
+.payment-result__actions a { padding: 10px 14px; color: white; background: #009ee3; border-radius: var(--radius-sm); text-decoration: none; font-weight: 700; }
+.payment-result__actions a:last-child { color: var(--text-h); background: var(--bg); border: 1px solid var(--border); }

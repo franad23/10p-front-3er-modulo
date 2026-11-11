@@ -30,7 +30,12 @@ export default function Login() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      const body = await res.json().catch(() => ({}));
+      let body;
+      try {
+        body = await res.json();
+      } catch {
+        body = {};
+      }
       if (!res.ok) {
         setServerError(body.message ?? "Credenciales inválidas");
         return;
