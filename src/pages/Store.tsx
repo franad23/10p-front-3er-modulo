@@ -86,8 +86,8 @@ export default function Store() {
       }
 
       const checkoutUrl = checkoutBody.sandbox_init_point || checkoutBody.init_point
-      window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
-      navigate('/orders')
+      sessionStorage.setItem('pending_order_id', order._id)
+      window.location.assign(checkoutUrl)
     } catch (checkoutError) {
       setError(checkoutError instanceof Error ? checkoutError.message : 'Error inesperado')
       setBuying(false)

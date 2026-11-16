@@ -19,11 +19,11 @@ export default function App() {
           <Route element={<RoleRoute roles={['CLIENT', 'ADMIN']} />}>
             <Route path="/store" element={<Store />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="/payment/success" element={<PaymentResult status="success" />} />
+            <Route path="/payment/pending" element={<PaymentResult status="pending" />} />
+            <Route path="/payment/failure" element={<PaymentResult status="failure" />} />
           </Route>
         </Route>
-        <Route path="/payment/success" element={<PaymentResult status="success" />} />
-        <Route path="/payment/pending" element={<PaymentResult status="pending" />} />
-        <Route path="/payment/failure" element={<PaymentResult status="failure" />} />
         <Route path="*" element={<Navigate to="/store" replace />} />
       </Routes>
     </BrowserRouter>
